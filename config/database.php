@@ -1,5 +1,7 @@
 <?php
 
+date_default_timezone_set('America/Bahia');
+
 $host = '127.0.0.1';
 $db = 'w5i_chamados';
 $username = 'root';
