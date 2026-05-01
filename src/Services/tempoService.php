@@ -25,9 +25,9 @@ function calcularTempo($dataInicio, $dataFim, $tempoEstimadoPorHora){
     $estourou = $horasTotaisUsadas >= $tempoEstimadoPorHora;
 
     if ($intervalo->days > 0){
-        $formatado = $intervalo->format('%a dias, %h horas e %i minutos');
+        $formatado = $intervalo->format('%a dias, %h horas, %i minutos e %s segundos');
     }else{
-        $formatado = $intervalo->format('%h horas e %i minutos');
+        $formatado = $intervalo->format('%h horas, %i minutos e %s segundos');
     }
 
     return [
