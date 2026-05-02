@@ -4,11 +4,16 @@ require_once dirname(__DIR__) . '/config/database.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $descricao = $_POST['descricao'];
     $horas = $_POST['tempo_estimado_horas'];
+
+    if(trim($descricao) !== '' && is_numeric($horas) && $horas >= 0) {
+        $query = "INSERT INTO prioridades (descricao, tempo_estimado_horas) VALUES (?, ?)";
+        $statement = $pdo->prepare($query);
+        $statement->execute([$descricao, $horas]);
+        echo "<script>alert('Prioridade cadastrada!'); window.location.href='prioridades.php';</script>";
+    } else {
+        echo "<script>alert('Por favor, preencha a descrição e insira um número válido para as horas.');</script>";
+    }
     
-    $query = "INSERT INTO prioridades (descricao, tempo_estimado_horas) VALUES (?, ?)";
-    $statement = $pdo->prepare($query);
-    $statement->execute([$descricao, $horas]);
-    echo "<script>alert('Prioridade cadastrada!'); window.location.href='prioridades.php';</script>";
 }
 
 $queryPrioridade = "SELECT * FROM prioridades ORDER BY tempo_estimado_horas ASC";
@@ -36,7 +41,7 @@ $prioridades = $statementPrioridade->fetchAll();
             <div class="col-md-8">
                 <div class="card shadow-sm mb-4 border-warning">
                     <div class="card-header bg-warning text-dark">
-                        <h5 class="mb-0">Cadastrar Prioridade e Tempo Limite</h5>
+                        <h5 class="mb-0">CADASTRO DE PRIORIDADE E TEMPO LIMITE</h5>
                     </div>
                     <div class="card-body">
                         <form method="POST" class="row g-3">
