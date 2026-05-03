@@ -22,13 +22,18 @@ if(!$chamado || $chamado['status'] !== 'Em Atendimento'){
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['acao']) && $_POST['acao'] === 'checkout') {
     try {
         $solucao = $_POST['solucao'];
-        
-        $sql = "UPDATE chamados SET status = 'Finalizado', data_fim = NOW(), solucao = ? WHERE id = ?";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([$solucao, $id]);
 
-        echo "<script>alert('Chamado finalizado com sucesso!'); window.location.href='index.php';</script>";
-        exit;
+        if(trim($solucao) !== '') {
+            $sql = "UPDATE chamados SET status = 'Finalizado', data_fim = NOW(), solucao = ? WHERE id = ?";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$solucao, $id]);
+
+            echo "<script>alert('Chamado finalizado com sucesso!'); window.location.href='index.php';</script>";
+            exit;
+        } else {
+            echo "<script>alert('A descrição da solução é obrigatória para finalizar o chamado.');</script>";
+        }
+        
     } catch (Exception $e) {
         echo "<script>alert('Erro ao finalizar: " . $e->getMessage() . "');</script>";
     }
