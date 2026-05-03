@@ -1,6 +1,19 @@
 <?php
 require_once dirname(__DIR__) . '/config/database.php';
 
+if(isset($_GET['excluir'])){
+    try{
+        $idExcluir = $_GET['excluir'];
+        $queryDelete = "DELETE FROM prioridades WHERE id = ?";
+        $statementDelete = $pdo->prepare($queryDelete);
+        $statementDelete->execute([$idExcluir]);
+        header("Location: prioridades.php?msg=excluido");
+        exit;
+    }catch(Exception $e){
+        echo "<script>alert('Erro ao excluir: " . $e->getMessage() . "');</script>";
+    }
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $descricao = $_POST['descricao'];
     $horas = $_POST['tempo_estimado_horas'];
@@ -67,6 +80,7 @@ $prioridades = $statementPrioridade->fetchAll();
                                 <tr>
                                     <th>Descrição</th>
                                     <th>Tempo Estimado</th>
+                                    <th>Ações</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -74,6 +88,13 @@ $prioridades = $statementPrioridade->fetchAll();
                                     <tr>
                                         <td class="fw-bold"><?= htmlspecialchars($prioridade['descricao']) ?></td>
                                         <td><?= $prioridade['tempo_estimado_horas'] ?> hora(s)</td>
+                                        <td class="text-center">
+                                        <a href="prioridades.php?excluir=<?= $prioridade['id'] ?>" 
+                                        class="btn btn-danger btn-sm" 
+                                        onclick="return confirm('Tem certeza que deseja remover esta prioridade?')">
+                                        Remover
+                                        </a>
+                                    </td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>

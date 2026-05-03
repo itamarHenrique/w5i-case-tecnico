@@ -1,6 +1,19 @@
 <?php
 require_once dirname(__DIR__) . '/config/database.php';
 
+if(isset($_GET['excluir'])){
+    try{
+        $idExcluir = $_GET['excluir'];
+        $queryDelete = "DELETE FROM setores WHERE id = ?";
+        $statementDelete = $pdo->prepare($queryDelete);
+        $statementDelete->execute([$idExcluir]);
+        header("Location: setores.php?msg=excluido");
+        exit;
+    }catch(Exception $e){
+        echo "<script>alert('Erro ao excluir: " . $e->getMessage() . "');</script>";
+    }
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome = $_POST['nome'];
     if(trim($nome) !== '') {
@@ -61,6 +74,7 @@ $setores = $statementSetor->fetchAll();
                                 <tr>
                                     <th width="100">ID</th>
                                     <th>Nome do Setor</th>
+                                    <th>Ações</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -68,6 +82,9 @@ $setores = $statementSetor->fetchAll();
                                     <tr>
                                         <td>#<?= $setor['id'] ?></td>
                                         <td><?= htmlspecialchars($setor['nome']) ?></td>
+                                        <td>
+                                            <a href="setores.php?excluir=<?= $setor['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este setor?');">Excluir</a>
+                                        </td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
