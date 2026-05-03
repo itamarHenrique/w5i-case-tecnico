@@ -2,10 +2,10 @@
 
 date_default_timezone_set('America/Bahia');
 
-$host = '127.0.0.1';
-$db = 'w5i_chamados';
-$username = 'root';
-$password = '0515';
+$host = '127.0.0.1'; #IP do servidor de banco de dados
+$db = 'w5i_chamados'; #Nome do banco de dados
+$username = 'root'; #Usuário do banco de dados (geralmente 'root' para desenvolvimento local)
+$password = '0515'; #Senha do banco de dados
 $charset = 'utf8mb4';
 
 $dataSourceName = "mysql:host=$host;dbname=$db;charset=$charset";
